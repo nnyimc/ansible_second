@@ -1,0 +1,6 @@
+---
+- hosts: targets
+  name: print hello world
+  tasks:
+    - name: hello printer
+      shell: echo "hello world" >> hello.txt

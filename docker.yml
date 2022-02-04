@@ -1,0 +1,43 @@
+---
+- hosts: targets
+  remote_user: nnyimc
+  become: True 
+  name: install docker
+  tasks:
+  - name: set up the repository
+    apt:
+      name: "{{ item }}"
+      update_cache: yes
+      state: latest
+    with_items:
+      - wget
+      - apt-transport-https
+      - software-properties-common
+      - ca-certificates
+      - curl
+      - gnupg2
+      - lsb-release
+  - name: add docker GPG key
+    apt_key:
+      url: https://download.docker.com/linux/debian/gpg
+      state: present
+  - name: adding repo for Debian bullseye
+    apt_repository: 
+      repo: "deb [arch=amd64] https://download.docker.com/linux/debian bullseye stable"
+      state: present
+  - name: update cache
+    apt:
+      name: "*"
+      state: latest
+  - name: install docker-ce
+    apt: 
+      name: docker-ce
+      state: present
+  - name: install docker-ce-cli
+    apt:
+      name: docker-ce-cli
+      state: present
+  - name: install containerd
+    apt:
+      name: containerd.io
+      state: present
