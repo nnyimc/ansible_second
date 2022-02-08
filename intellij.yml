@@ -1,0 +1,19 @@
+---
+- hosts: targets
+  remote_user: nnyimc
+  become: True
+  name: install intellij on debian
+  tasks:
+    - name: update apt and install snapd
+      apt:
+        name: snapd
+        update_cache: yes
+        state: latest
+    - name: start snapd
+      service:
+        name: snapd
+        state: started
+        enabled: yes
+    - name: install intellij-ultimate
+      command: "sudo snap install intellij-idea-ultimate --classic"       
+  
